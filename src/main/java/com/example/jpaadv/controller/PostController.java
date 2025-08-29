@@ -62,8 +62,8 @@ public class PostController {
     }
 
     @PostMapping("/{id}/edit") // path variable
-    public String update(@PathVariable Long id) {
-        postService.delete(id);
+    public String update(@PathVariable Long id, @ModelAttribute("post") PostDTO.SaveRequest dto) {
+        postService.update(id, dto);
         return "redirect:/posts";
     }
 }
