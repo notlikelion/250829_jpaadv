@@ -1,6 +1,7 @@
 package com.example.jpaadv.service;
 
 import com.example.jpaadv.model.dto.PostDTO;
+import com.example.jpaadv.model.entity.Post;
 import com.example.jpaadv.model.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,29 @@ public class PostService {
                 .map(PostDTO.Response::fromEntity)
                 // list로 만들어주는 stream.
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public PostDTO.Response findById(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow();
+        return PostDTO.Response.fromEntity(post);
+    }
+
+    @Transactional
+    public Long update(Long id, PostDTO.SaveRequest dto) {
+        // postRepository.existsById(id) -> 존재 여부를 알려주는 메서드 (t/f)
+        Post post = postRepository.findById(id)
+                .orElseThrow(); // 없는 걸 업데이트할 순 없으니까
+        post.update(dto.getTitle(), dto.getContent());
+        // 별도로 save하지 않아도...
+        return id;
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(); // 없는 걸 업데이트할 순 없으니까
+        postRepository.delete(post);
     }
 }
