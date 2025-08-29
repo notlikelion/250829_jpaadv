@@ -1,0 +1,26 @@
+# spring.application.name=jpaadv
+spring:
+  application:
+    name: jpaadv
+  # 개발 환경에서 'dev'를 활성화하겠다
+  # -> spring.profiles.active=* 등이 들어오면 이건 무시된다 (환경변수등으로 전달하면)
+  profiles:
+#    active: dev
+    active: prod
+
+  # JPA -> 공통 설정
+  jpa:
+    show-sql: true
+    # 실행되는 jpa 명령어와 대응되는 sql을 로그로 보여준다
+    properties:
+      # jpa 구현체
+      hibernate:
+        # 보기 좋게 sql 줄간격, 띄어쓰기, 엔터 등을 해주겠다
+        format_sql: true
+    # 테이블 생성 전략
+    hibernate:
+      ddl-auto: create
+
+  # 타임리프
+  thymeleaf:
+    cache: false
