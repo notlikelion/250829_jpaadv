@@ -9,7 +9,7 @@
 </head>
 <body>
     <a th:href="@{/posts}">목록으로</a>
-    <form th:object="${post}" th:action="@/posts/new" method="post">
+    <form th:object="${post}" th:action="@{/posts/new}" method="post">
         <input th:field="*{title}" required placeholder="제목">
         <input th:field="*{author}" required placeholder="작성자">
         <textarea th:field="*{content}" required placeholder="내용"></textarea>
