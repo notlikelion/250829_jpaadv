@@ -33,4 +33,37 @@ public class PostController {
         // P-R-G
         return "redirect:/posts";
     }
+
+    @GetMapping("/{id}") // path variable
+    public String detail(@PathVariable Long id, Model model) {
+        // /{} -> /1 -> 1 -> Long id
+        model.addAttribute("post", postService.findById(id));
+        return "post/detail";
+    }
+
+    @PostMapping("/{id}/delete") // path variable
+    public String delete(@PathVariable Long id) {
+        postService.delete(id);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/{id}/edit") // path variable
+    public String updateForm(@PathVariable Long id, Model model) {
+        PostDTO.Response postResponse = postService.findById(id);
+        // 수정의 대상이 될 원본을 불러와요
+        PostDTO.SaveRequest postRequest = new PostDTO.SaveRequest();
+        postRequest.setTitle(postResponse.title()); // record
+        postRequest.setContent(postResponse.content());
+        postRequest.setAuthor(postResponse.author());
+        // post에다가 주면 -> form
+        model.addAttribute("post", postRequest);
+        model.addAttribute("postId", id);
+        return "post/form";
+    }
+
+    @PostMapping("/{id}/edit") // path variable
+    public String update(@PathVariable Long id) {
+        postService.delete(id);
+        return "redirect:/posts";
+    }
 }
